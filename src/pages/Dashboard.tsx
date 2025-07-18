@@ -1,28 +1,9 @@
 import { useState, useEffect } from 'react';
 import { RepositoryCard } from '../components/RepositoryCard';
+import { SkeletonCard } from '../components/SkeletonCard';
 import { fetchRepositories } from '../utils/api';
 import type { Repository } from '../types/repository';
 import './Dashboard.css';
-
-const SkeletonCard = () => (
-  <div className="repository-card skeleton">
-    <div className="skeleton-header">
-      <div className="skeleton-title"></div>
-      <div className="skeleton-badge"></div>
-    </div>
-    <div className="skeleton-description"></div>
-    <div className="skeleton-content">
-      <div className="skeleton-stats">
-        <div className="skeleton-stat"></div>
-        <div className="skeleton-stat"></div>
-      </div>
-    </div>
-    <div className="skeleton-footer">
-      <div className="skeleton-updated"></div>
-      <div className="skeleton-hint"></div>
-    </div>
-  </div>
-);
 
 export const Dashboard = () => {
   const [repositories, setRepositories] = useState<Repository[]>([]);
