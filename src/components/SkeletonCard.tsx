@@ -1,7 +1,7 @@
 import './SkeletonCard.css'
 
 export const SkeletonCard = () => (
-  <div className="repository-card skeleton">
+  <div className="repository-card skeleton" data-testid="skeleton-card">
     <div className="skeleton-header">
       <div className="skeleton-title"></div>
       <div className="skeleton-badge"></div>

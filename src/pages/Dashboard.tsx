@@ -29,12 +29,12 @@ export const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="dashboard">
+      <div className="dashboard" data-testid="dashboard">
         <div className="dashboard-header">
-          <h1>GoDaddy Repositories</h1>
-          <p>Loading repositories...</p>
+          <h1 data-testid="dashboard-title">GoDaddy Repositories</h1>
+          <p data-testid="loading-message">Loading repositories...</p>
         </div>
-        <div className="repositories-grid">
+        <div className="repositories-grid" data-testid="repositories-grid">
           {[...Array(6)].map((_, index) => (
             <SkeletonCard key={index} />
           ))}
@@ -45,17 +45,18 @@ export const Dashboard = () => {
 
   if (error) {
     return (
-      <div className="dashboard">
+      <div className="dashboard" data-testid="dashboard">
         <div className="dashboard-header">
-          <h1>GoDaddy Repositories</h1>
+          <h1 data-testid="dashboard-title">GoDaddy Repositories</h1>
         </div>
-        <div className="error-container">
+        <div className="error-container" data-testid="error-container">
           <div className="error-message">
-            <h3>Error loading repositories</h3>
-            <p>{error}</p>
+            <h3 data-testid="error-title">Error loading repositories</h3>
+            <p data-testid="error-message">{error}</p>
             <button 
               onClick={() => window.location.reload()} 
               className="retry-button"
+              data-testid="retry-button"
             >
               Try Again
             </button>
@@ -66,13 +67,13 @@ export const Dashboard = () => {
   }
 
   return (
-    <div className="dashboard">
+    <div className="dashboard" data-testid="dashboard">
       <div className="dashboard-header">
-        <h1>GoDaddy Repositories</h1>
-        <p>Discover {repositories.length} open source projects from GoDaddy</p>
+        <h1 data-testid="dashboard-title">GoDaddy Repositories</h1>
+        <p data-testid="dashboard-subtitle">Discover {repositories.length} open source projects from GoDaddy</p>
       </div>
       
-      <div className="repositories-grid">
+      <div className="repositories-grid" data-testid="repositories-grid">
         {repositories.map((repository) => (
           <RepositoryCard 
             key={repository.id} 

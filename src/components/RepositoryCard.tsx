@@ -1,6 +1,7 @@
 import type { Repository } from '../types/repository';
 import { formatNumber } from '../utils/api';
 import { Star, GitFork, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import './RepositoryCard.css';
 
 interface RepositoryCardProps {
@@ -9,6 +10,7 @@ interface RepositoryCardProps {
 
 export const RepositoryCard = ({ repository }: RepositoryCardProps) => {
   const {
+    id,
     name,
     description,
     stargazers_count,
@@ -35,16 +37,10 @@ export const RepositoryCard = ({ repository }: RepositoryCardProps) => {
   };
 
   return (
-    <div 
+    <Link 
+      to={`/repository/${id}`}
       className="repository-card"
-      role="button"
-      tabIndex={0}
       aria-label={`View details for ${name} repository`}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-        }
-      }}
     >
       <div className="card-header">
         <div className="repo-name-section">
@@ -99,6 +95,6 @@ export const RepositoryCard = ({ repository }: RepositoryCardProps) => {
           <ArrowRight size={16} aria-hidden="true" />
         </div>
       </div>
-    </div>
+    </Link>
   );
 }; 

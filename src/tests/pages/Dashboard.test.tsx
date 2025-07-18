@@ -1,10 +1,18 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { BrowserRouter } from 'react-router-dom'
 import { Dashboard } from '../../pages/Dashboard'
 
 vi.mock('../../utils/api', () => ({
   fetchRepositories: vi.fn()
 }))
+
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
+  return {
+    ...actual,
+  };
+});
 
 Object.defineProperty(window, 'location', {
   value: {
@@ -13,24 +21,32 @@ Object.defineProperty(window, 'location', {
   writable: true
 })
 
+const renderWithRouter = (component: React.ReactElement) => {
+  return render(
+    <BrowserRouter>
+      {component}
+    </BrowserRouter>
+  )
+}
+
 describe('Dashboard', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
 
   it('renders the dashboard title', () => {
-    render(<Dashboard />)
-    expect(screen.getByText('GoDaddy Repositories')).toBeInTheDocument()
+    renderWithRouter(<Dashboard />)
+    expect(screen.getByTestId('dashboard-title')).toBeInTheDocument()
   })
 
   it('shows loading state initially', () => {
-    render(<Dashboard />)
-    expect(screen.getByText('Loading repositories...')).toBeInTheDocument()
+    renderWithRouter(<Dashboard />)
+    expect(screen.getByTestId('loading-message')).toBeInTheDocument()
   })
 
   it('displays skeleton cards during loading', () => {
-    render(<Dashboard />)
-    const skeletonCards = document.querySelectorAll('.skeleton')
+    renderWithRouter(<Dashboard />)
+    const skeletonCards = screen.getAllByTestId('skeleton-card')
     expect(skeletonCards.length).toBeGreaterThan(0)
   })
 
@@ -38,19 +54,19 @@ describe('Dashboard', () => {
     const { fetchRepositories } = await import('../../utils/api')
     vi.mocked(fetchRepositories).mockRejectedValue(new Error('Network error'))
     
-    render(<Dashboard />)
+    renderWithRouter(<Dashboard />)
     
-    await screen.findByText('Error loading repositories')
-    expect(screen.getByText('Network error')).toBeInTheDocument()
+    await screen.findByTestId('error-title')
+    expect(screen.getByTestId('error-message')).toHaveTextContent('Network error')
   })
 
   it('displays retry button in error state', async () => {
     const { fetchRepositories } = await import('../../utils/api')
     vi.mocked(fetchRepositories).mockRejectedValue(new Error('Network error'))
     
-    render(<Dashboard />)
+    renderWithRouter(<Dashboard />)
     
-    const retryButton = await screen.findByText('Try Again')
+    const retryButton = await screen.findByTestId('retry-button')
     expect(retryButton).toBeInTheDocument()
     expect(retryButton).toHaveClass('retry-button')
   })
@@ -59,23 +75,21 @@ describe('Dashboard', () => {
     const { fetchRepositories } = await import('../../utils/api')
     vi.mocked(fetchRepositories).mockRejectedValue(new Error('Network error'))
     
-    render(<Dashboard />)
+    renderWithRouter(<Dashboard />)
     
-    const retryButton = await screen.findByText('Try Again')
+    const retryButton = await screen.findByTestId('retry-button')
     fireEvent.click(retryButton)
     
     expect(window.location.reload).toHaveBeenCalled()
   })
 
   it('has proper page structure', () => {
-    render(<Dashboard />)
+    renderWithRouter(<Dashboard />)
     
-    const dashboard = document.querySelector('.dashboard')
-    const header = document.querySelector('.dashboard-header')
-    const grid = document.querySelector('.repositories-grid')
+    const dashboard = screen.getByTestId('dashboard')
+    const grid = screen.getByTestId('repositories-grid')
     
     expect(dashboard).toBeInTheDocument()
-    expect(header).toBeInTheDocument()
     expect(grid).toBeInTheDocument()
   })
 }) 

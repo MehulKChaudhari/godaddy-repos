@@ -9,6 +9,7 @@ export const mockRepository: Repository = {
   clone_url: 'https://github.com/mehulkchaudhari/test-repo.git',
   stargazers_count: 150,
   forks_count: 25,
+  watchers_count: 10,
   language: 'TypeScript',
   updated_at: '2024-01-15T10:30:00Z',
   created_at: '2024-01-01T00:00:00Z',
@@ -36,10 +37,11 @@ export const mockRepositories: Repository[] = [
     ...mockRepository,
     id: 2,
     name: 'another-repo',
-    full_name: 'godaddy/another-repo',
+    full_name: 'another-repo',
     description: 'Another test repository',
     stargazers_count: 75,
     forks_count: 12,
+    watchers_count: 5,
     language: 'JavaScript',
     visibility: 'private'
   }
